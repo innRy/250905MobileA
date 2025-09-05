@@ -12,10 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileA">
         <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
+            android:name=".Account"
+            android:exported="true">
+        </activity>
+
         <activity
-            android:name=".MainActivity"
+            android:name=".Home"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
