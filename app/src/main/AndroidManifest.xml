@@ -12,10 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileA">
         <activity
-            android:name=".MainActivity2"
+<<<<<<< HEAD
+            android:name=".Account"
+=======
+            android:name=".MainActivity3"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".MainActivity2"
+>>>>>>> 58f40a89a409f03c4fb5b993e967c480b5af5922
+            android:exported="false" />
+        <activity
+            android:name=".Home"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
