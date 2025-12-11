@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileA">
         <activity
-            android:name=".Register"
+            android:name=".ui.auth.login.register.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".Account"
