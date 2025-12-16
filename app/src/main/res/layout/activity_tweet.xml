@@ -41,10 +41,12 @@
         android:id="@+id/button"
         android:layout_width="320dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="24dp"
-        android:background="@color/gray"
+        android:layout_marginBottom="56dp"
+
+        android:backgroundTint="@color/orange"
+
         android:text="投稿"
-        android:textColor="@color/black"
+        android:textColor="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -1,13 +1,16 @@
 package jp.ac.meijo.android.mobilea;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,6 +28,7 @@ public class PostActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<Post> posts;
+    private FloatingActionButton fabNewPost;
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -39,6 +43,7 @@ public class PostActivity extends AppCompatActivity {
 
         posts = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler_view_posts);
+        fabNewPost = findViewById(R.id.fab_new_post);
 
         int spanCount = 3;
         GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
@@ -47,17 +52,35 @@ public class PostActivity extends AppCompatActivity {
         postAdapter = new PostAdapter(posts);
         recyclerView.setAdapter(postAdapter);
 
-        signInAnonymouslyAndLoadPosts();
+        fabNewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PostActivity.this, TweetActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void signInAnonymouslyAndLoadPosts() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadDataOnResume();
+    }
+
+    private void loadDataOnResume() {
         FirebaseUser user = auth.getCurrentUser();
 
         if (user != null) {
-            Log.d(TAG, "Already signed in as: " + user.getUid());
+            Log.d(TAG, "Activity resumed. Reloading posts for user: " + user.getUid());
             loadPostsFromFirestore();
-            return;
+        } else {
+            Log.d(TAG, "Activity resumed. User is null. Starting anonymous sign-in.");
+            signInAnonymouslyAndLoadPosts();
         }
+    }
+
+
+    private void signInAnonymouslyAndLoadPosts() {
 
         auth.signInAnonymously()
                 .addOnCompleteListener(this, task -> {
