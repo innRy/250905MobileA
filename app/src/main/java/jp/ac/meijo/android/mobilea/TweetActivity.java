@@ -75,21 +75,16 @@ public class TweetActivity extends AppCompatActivity {
         textViewSelectHint = findViewById(R.id.text_view_select_hint);
         button = findViewById(R.id.button);
 
-        auth = FirebaseAuth.getInstance(); // ★追加
+        auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
         db = FirebaseFirestore.getInstance();
 
         if (auth.getCurrentUser() == null) {
-
-            auth.signInAnonymously()
-                    .addOnCompleteListener(task -> {
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(TweetActivity.this, "匿名ログイン失敗。投稿機能が使えません。", Toast.LENGTH_LONG).show();
-                        }
-                    });
+            Toast.makeText(this, "認証セッションがありません。ホーム画面に戻ってください。", Toast.LENGTH_LONG).show();
+            button.setEnabled(false);
+        } else {
+            button.setEnabled(false);
         }
-
-        button.setEnabled(false);
 
         imageViewSelectedPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
