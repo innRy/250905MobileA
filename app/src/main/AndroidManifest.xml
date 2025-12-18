@@ -19,17 +19,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileA">
+
+        <!-- ★起動画面：ログイン画面 -->
         <activity
-            android:name=".ui.auth.login.register.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Account"
-            android:exported="true" />
-        <activity
-            android:name=".Home"
-            android:exported="true" />
-        <activity
-            android:name=".PostActivity"
+            android:name=".ui.auth.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,8 +30,29 @@
             </intent-filter>
         </activity>
 
+        <!-- 新規登録画面 -->
+        <activity
+            android:name=".ui.auth.register.RegisterActivity"
+            android:exported="false" />
+
+        <!-- ホーム画面 -->
+        <activity
+            android:name=".Home"
+            android:exported="false" />
+
+        <!-- アカウント画面 -->
+        <activity
+            android:name=".Account"
+            android:exported="false" />
+
+        <!-- 投稿画面 -->
+        <activity
+            android:name=".PostActivity"
+            android:exported="false" />
+
+        <!-- ツイート画面 -->
         <activity
             android:name=".TweetActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 </manifest>

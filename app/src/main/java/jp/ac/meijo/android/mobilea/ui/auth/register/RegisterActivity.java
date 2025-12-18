@@ -1,5 +1,6 @@
 package jp.ac.meijo.android.mobilea.ui.auth.register;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import jp.ac.meijo.android.mobilea.Home;
 import jp.ac.meijo.android.mobilea.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -48,6 +50,9 @@ public class RegisterActivity extends AppCompatActivity {
         viewModel.getSuccess().observe(this, ok -> {
             if (ok != null && ok) {
                 Toast.makeText(this, "登録成功！", Toast.LENGTH_SHORT).show();
+                // ★ホーム画面に遷移
+                Intent intent = new Intent(RegisterActivity.this, Home.class);
+                startActivity(intent);
                 finish();
             }
         });
