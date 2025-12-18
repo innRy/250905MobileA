@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -30,13 +31,18 @@ android {
 
 dependencies {
 
-    implementation libs.appcompat
-    implementation libs.material
-    implementation libs.activity
-    implementation libs.constraintlayout
-    testImplementation libs.junit
-    androidTestImplementation libs.ext.junit
-    androidTestImplementation libs.espresso.core
-    //追加した依存関係
-
+    implementation (libs.appcompat)
+    implementation (libs.material)
+    implementation (libs.activity)
+    implementation (libs.constraintlayout)
+    implementation (platform(libs.firebase.bom))
+    implementation (libs.firebase.analytics)
+    implementation (libs.firebase.auth)
+    implementation (libs.firebase.firestore)
+    implementation (libs.firebase.storage)
+    implementation (libs.recyclerview)
+    implementation libs.glide
+    testImplementation (libs.junit)
+    androidTestImplementation (libs.ext.junit)
+    androidTestImplementation (libs.espresso.core)
 }
