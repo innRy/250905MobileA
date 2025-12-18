@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TweetActivity">
+
+    <ImageView
+        android:id="@+id/image_view_selected_photo" android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+
+        app:layout_constraintDimensionRatio="4:5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+
+        android:scaleType="centerCrop"
+        android:background="#EEEEEE"
+        android:contentDescription="選択された画像" />
+
+    <TextView
+        android:id="@+id/text_view_select_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ここをタップして画像を選択"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:padding="8dp"
+
+        app:layout_constraintTop_toTopOf="@+id/image_view_selected_photo"
+        app:layout_constraintBottom_toBottomOf="@+id/image_view_selected_photo"
+        app:layout_constraintStart_toStartOf="@+id/image_view_selected_photo"
+        app:layout_constraintEnd_toEndOf="@+id/image_view_selected_photo" />
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="320dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="56dp"
+
+        android:backgroundTint="@color/orange"
+
+        android:text="投稿"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
