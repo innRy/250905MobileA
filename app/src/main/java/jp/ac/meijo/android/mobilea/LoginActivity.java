@@ -26,7 +26,6 @@ public class LoginActivity extends AppCompatActivity {
             moveToPostActivity();
             return;
         }
-        // ------------------------------
 
         EditText editEmail = findViewById(R.id.edit_login_email);
         EditText editPassword = findViewById(R.id.edit_login_password);

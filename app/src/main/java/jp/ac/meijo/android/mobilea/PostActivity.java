@@ -31,7 +31,7 @@ public class PostActivity extends AppCompatActivity {
     private PostAdapter postAdapter;
     private List<Post> posts;
     private FloatingActionButton fabNewPost;
-    private ImageButton buttonLogout; // ログアウトボタン用
+    private ImageButton buttonLogout;
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -47,7 +47,7 @@ public class PostActivity extends AppCompatActivity {
         posts = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler_view_posts);
         fabNewPost = findViewById(R.id.fab_new_post);
-        buttonLogout = findViewById(R.id.button_logout); // 初期化
+        buttonLogout = findViewById(R.id.button_logout);
 
         int spanCount = 3;
         GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
@@ -56,7 +56,6 @@ public class PostActivity extends AppCompatActivity {
         postAdapter = new PostAdapter(posts);
         recyclerView.setAdapter(postAdapter);
 
-        // 新規投稿ボタン
         fabNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,16 +64,13 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        // ログアウトボタンの処理
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Firebaseからログアウト
                 auth.signOut();
 
                 Toast.makeText(PostActivity.this, "ログアウトしました", Toast.LENGTH_SHORT).show();
 
-                // ログイン画面へ戻る（履歴をクリア）
                 Intent intent = new Intent(PostActivity.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
