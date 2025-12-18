@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class PostActivity extends AppCompatActivity {
     private PostAdapter postAdapter;
     private List<Post> posts;
     private FloatingActionButton fabNewPost;
+    private ImageButton buttonLogout; // ログアウトボタン用
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -44,6 +47,7 @@ public class PostActivity extends AppCompatActivity {
         posts = new ArrayList<>();
         recyclerView = findViewById(R.id.recycler_view_posts);
         fabNewPost = findViewById(R.id.fab_new_post);
+        buttonLogout = findViewById(R.id.button_logout); // 初期化
 
         int spanCount = 3;
         GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
@@ -52,6 +56,7 @@ public class PostActivity extends AppCompatActivity {
         postAdapter = new PostAdapter(posts);
         recyclerView.setAdapter(postAdapter);
 
+        // 新規投稿ボタン
         fabNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,52 +64,54 @@ public class PostActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // ログアウトボタンの処理
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Firebaseからログアウト
+                auth.signOut();
+
+                Toast.makeText(PostActivity.this, "ログアウトしました", Toast.LENGTH_SHORT).show();
+
+                // ログイン画面へ戻る（履歴をクリア）
+                Intent intent = new Intent(PostActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadDataOnResume();
+        checkUserAuthAndLoadData();
     }
 
-    private void loadDataOnResume() {
+    private void checkUserAuthAndLoadData() {
         FirebaseUser user = auth.getCurrentUser();
 
         if (user != null) {
-            Log.d(TAG, "Activity resumed. Reloading posts for user: " + user.getUid());
+            Log.d(TAG, "User is authenticated: " + user.getUid());
             loadPostsFromFirestore();
         } else {
-            Log.d(TAG, "Activity resumed. User is null. Starting anonymous sign-in.");
-            signInAnonymouslyAndLoadPosts();
+            Log.d(TAG, "No authenticated user. Redirecting to LoginActivity.");
+            Intent intent = new Intent(PostActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         }
-    }
-
-
-    private void signInAnonymouslyAndLoadPosts() {
-
-        auth.signInAnonymously()
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        FirebaseUser newUser = auth.getCurrentUser();
-                        Log.d(TAG, "Anonymous sign in successful. UID: " + newUser.getUid());
-                        Toast.makeText(PostActivity.this, "匿名ログインしました。", Toast.LENGTH_SHORT).show();
-                        loadPostsFromFirestore();
-                    } else {
-                        Log.w(TAG, "Anonymous sign in failed.", task.getException());
-                        Toast.makeText(PostActivity.this, "認証エラー。投稿データの読み込みができません。", Toast.LENGTH_LONG).show();
-                    }
-                });
     }
 
     private void loadPostsFromFirestore() {
         db.collection("posts")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         List<Post> newPosts = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getId() + " => " + document.getData());
-
                             String imageUrl = document.getString("imageUrl");
                             String userId = document.getString("userId");
 
@@ -114,12 +121,10 @@ public class PostActivity extends AppCompatActivity {
                             }
                         }
                         postAdapter.updatePosts(newPosts);
-
                     } else {
                         Log.w(TAG, "Error getting documents.", task.getException());
                         Toast.makeText(PostActivity.this, "投稿データの取得に失敗しました。", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-
 }

@@ -20,9 +20,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MobileA">
         <activity
-            android:name=".Register"
-            android:exported="false" />
-        <activity
             android:name=".Account"
             android:exported="true" />
         <activity
@@ -30,15 +27,22 @@
             android:exported="true" />
         <activity
             android:name=".PostActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".TweetActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".TweetActivity"
+            android:name=".RegisterActivity"
             android:exported="true" />
     </application>
 </manifest>
