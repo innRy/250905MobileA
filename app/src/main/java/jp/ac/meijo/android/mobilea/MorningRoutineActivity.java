@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.android.material.bottomnavigation.BottomNavigationView; // 追加
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,20 +22,13 @@ public class MorningRoutineActivity extends AppCompatActivity {
         setContentView(R.layout.activity_morningroutine);
 
         todoList = new ArrayList<>();
-        adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                todoList
-        );
-
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, todoList);
         listView = findViewById(R.id.listTodo);
         listView.setAdapter(adapter);
 
         Button addButton = findViewById(R.id.btnAdd);
         addButton.setOnClickListener(v -> {
-            View dialogView = getLayoutInflater()
-                    .inflate(R.layout.dialog_add_todo, null);
-
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_todo, null);
             EditText editDialog = dialogView.findViewById(R.id.editTodoDialog);
 
             new AlertDialog.Builder(this)
@@ -43,7 +36,6 @@ public class MorningRoutineActivity extends AppCompatActivity {
                     .setView(dialogView)
                     .setPositiveButton("追加", (dialog, which) -> {
                         String text = editDialog.getText().toString();
-
                         if (!text.isEmpty()) {
                             todoList.add(text);
                             adapter.notifyDataSetChanged();
@@ -53,19 +45,22 @@ public class MorningRoutineActivity extends AppCompatActivity {
                     .show();
         });
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setSelectedItemId(R.id.nav_morning_routine);
 
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
-
-        bottomNavigationView.setOnItemSelectedListener(item -> {
+        bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
-
-            if (id == R.id.nav_post) {
-                // PostActivityへ画面遷移
-                Intent intent = new Intent(this, PostActivity.class);
+            if (id == R.id.nav_home) { // Clock
+                Intent intent = new Intent(this, Home.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
                 return true;
-            } else if (id == R.id.nav_home) {
+            } else if (id == R.id.nav_morning_routine) {
+                return true;
+            } else if (id == R.id.nav_post) {
+                Intent intent = new Intent(this, PostActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
                 return true;
             }
             return false;

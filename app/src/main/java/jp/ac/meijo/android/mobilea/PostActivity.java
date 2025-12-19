@@ -31,13 +31,11 @@ import jp.ac.meijo.android.mobilea.adapter.PostAdapter;
 public class PostActivity extends AppCompatActivity {
 
     private static final String TAG = "PostActivity";
-
     private RecyclerView recyclerView;
     private PostAdapter postAdapter;
     private List<Post> posts;
     private FloatingActionButton fabNewPost;
     private ImageButton buttonLogout;
-
     private FirebaseAuth auth;
     private FirebaseFirestore db;
 
@@ -46,11 +44,16 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_post);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.constraintLayout), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
-            return insets;
-        });
+
+        View constraintLayout = findViewById(R.id.constraintLayout);
+        if (constraintLayout != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(constraintLayout, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0);
+                return insets;
+            });
+        }
+
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -59,43 +62,37 @@ public class PostActivity extends AppCompatActivity {
         fabNewPost = findViewById(R.id.fab_new_post);
         buttonLogout = findViewById(R.id.button_logout);
 
-        int spanCount = 3;
-        GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
-        recyclerView.setLayoutManager(layoutManager);
-
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         postAdapter = new PostAdapter(posts);
         recyclerView.setAdapter(postAdapter);
 
-        fabNewPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PostActivity.this, TweetActivity.class);
-                startActivity(intent);
-            }
+        fabNewPost.setOnClickListener(v -> {
+            startActivity(new Intent(PostActivity.this, TweetActivity.class));
         });
 
-        buttonLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                auth.signOut();
-
-                Toast.makeText(PostActivity.this, "ログアウトしました", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(PostActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            }
+        buttonLogout.setOnClickListener(v -> {
+            auth.signOut();
+            Toast.makeText(PostActivity.this, "ログアウトしました", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(PostActivity.this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         });
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_post);
+
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.nav_home) {
-                Intent intent = new Intent(PostActivity.this, Home.class);
+                Intent intent = new Intent(this, Home.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(intent);
-                finish();
+                return true;
+            } else if (itemId == R.id.nav_morning_routine) {
+                Intent intent = new Intent(this, MorningRoutineActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
                 return true;
             } else if (itemId == R.id.nav_post) {
                 return true;
@@ -112,12 +109,9 @@ public class PostActivity extends AppCompatActivity {
 
     private void checkUserAuthAndLoadData() {
         FirebaseUser user = auth.getCurrentUser();
-
         if (user != null) {
-            Log.d(TAG, "User is authenticated: " + user.getUid());
             loadPostsFromFirestore();
         } else {
-            Log.d(TAG, "No authenticated user. Redirecting to LoginActivity.");
             Intent intent = new Intent(PostActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
@@ -135,16 +129,11 @@ public class PostActivity extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String imageUrl = document.getString("imageUrl");
                             String userId = document.getString("userId");
-
                             if (imageUrl != null && userId != null) {
-                                Post post = new Post(imageUrl, userId);
-                                newPosts.add(post);
+                                newPosts.add(new Post(imageUrl, userId));
                             }
                         }
                         postAdapter.updatePosts(newPosts);
-                    } else {
-                        Log.w(TAG, "Error getting documents.", task.getException());
-                        Toast.makeText(PostActivity.this, "投稿データの取得に失敗しました。", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
