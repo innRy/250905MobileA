@@ -8,4 +8,8 @@
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_alarm"
         android:title="Clock" />
+    <item
+        android:id="@+id/nav_morning_routine"
+        android:icon="@drawable/ic_checkbox"
+        android:title="MorningRoutine" />
 </menu>
