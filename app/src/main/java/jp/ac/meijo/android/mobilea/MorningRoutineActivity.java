@@ -1,7 +1,7 @@
 package jp.ac.meijo.android.mobilea;
 
 import android.app.AlertDialog;
-import android.content.Intent; // 画面遷移に必要
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
@@ -21,7 +21,6 @@ public class MorningRoutineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_morningroutine);
 
-        // --- 1. ToDoリストの基本設定 ---
         todoList = new ArrayList<>();
         adapter = new ArrayAdapter<>(
                 this,
@@ -32,7 +31,6 @@ public class MorningRoutineActivity extends AppCompatActivity {
         listView = findViewById(R.id.listTodo);
         listView.setAdapter(adapter);
 
-        // --- 2. 追加ボタン（ダイアログ表示）の設定 ---
         Button addButton = findViewById(R.id.btnAdd);
         addButton.setOnClickListener(v -> {
             View dialogView = getLayoutInflater()
@@ -55,10 +53,8 @@ public class MorningRoutineActivity extends AppCompatActivity {
                     .show();
         });
 
-        // --- 3. ボトムナビゲーションの設定 (追加部分) ---
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        // 現在の画面のアイテムを選択状態にする（Clockがこの画面の場合）
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -70,8 +66,6 @@ public class MorningRoutineActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             } else if (id == R.id.nav_home) {
-                // すでに現在のActivityにいるため、遷移は不要
-                // (必要であれば一番上までスクロールさせる等の処理を書く)
                 return true;
             }
             return false;
