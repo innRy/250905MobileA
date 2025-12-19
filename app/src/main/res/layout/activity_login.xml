@@ -2,34 +2,34 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_register"
+    android:id="@+id/layout_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".LoginActivity">
 
     <TextView
-        android:id="@+id/text_register_title"
-        android:layout_width="wrap_content"
+        android:id="@+id/text_login_welcome"
+        android:layout_width="208dp"
         android:layout_height="40dp"
         android:layout_marginTop="60dp"
-        android:text="新規登録"
-        android:textSize="24sp"
+        android:text="朝活logへようこそ"
+        android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/label_register_email"
+        android:id="@+id/label_login_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="38dp"
         android:layout_marginTop="60dp"
         android:text="E-mail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_register_title" />
+        app:layout_constraintTop_toBottomOf="@+id/text_login_welcome" />
 
     <EditText
-        android:id="@+id/edit_register_email"
+        android:id="@+id/edit_login_email"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginStart="68dp"
@@ -40,59 +40,55 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.019"
-        app:layout_constraintStart_toEndOf="@id/label_register_email"
-        app:layout_constraintTop_toBottomOf="@id/text_register_title" />
+        app:layout_constraintStart_toEndOf="@id/label_login_email"
+        app:layout_constraintTop_toBottomOf="@id/text_login_welcome" />
 
     <TextView
-        android:id="@+id/label_register_password"
+        android:id="@+id/label_login_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="52dp"
         android:text="パスワード"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_register_email" />
+        app:layout_constraintTop_toBottomOf="@+id/label_login_email" />
 
     <EditText
-        android:id="@+id/edit_register_password"
+        android:id="@+id/edit_login_password"
         android:layout_width="240dp"
         android:layout_height="48dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="パスワードを入力してください"
         android:inputType="textPassword"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toEndOf="@+id/label_register_password"
-        app:layout_constraintTop_toBottomOf="@+id/edit_register_email" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/label_login_password"
+        app:layout_constraintTop_toBottomOf="@+id/edit_login_email" />
+
+    <TextView
+        android:id="@+id/text_go_to_registration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="アカウントをお持ちでない方はこちら"
+        android:textColor="#5B5F6A"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_login_password" />
 
     <Button
-        android:id="@+id/button_register_next"
-        android:layout_width="120dp"
+        android:id="@+id/button_login_submit"
+        android:layout_width="320dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="368dp"
+        android:layout_marginBottom="56dp"
         android:backgroundTint="@color/orange"
-        android:text="次へ"
+        android:text="ログイン"
         android:textColor="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button_register_back"
-        android:layout_width="120dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="368dp"
-        android:backgroundTint="#95A4B7"
-        android:text="戻る"
-        android:textColor="@color/gray"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
